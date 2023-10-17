@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>金寨县希望工程受助学生统计</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/layui/css/layui.css" rel="stylesheet">
+</head>
+<body>
+<ul class="layui-nav">
+    <li class="layui-nav-item layui-this"><a href="index.html">首页</a></li>
+    <li class="layui-nav-item"><a href="upload.html">上传</a></li>
+</ul>
+<!--
+本「综合演示」包含：自定义头部工具栏、获取表格数据、表格重载、自定义模板、单双行显示、单元格编辑、自定义底部分页栏、表格相关事件与操作、与其他组件的结合等相对常用的功能，以便快速掌握 table 组件的使用。
+-->
+<form class="layui-form layui-row" lay-filter="demo-val-filter" style="padding-top: 18px">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label layui-padding-0" style="padding-left: 0;width: 60px;">姓名</label>
+            <div class="layui-input-inline layui-input-wrap">
+                <input type="text" name="name" autocomplete="off" class="layui-input">
+            </div>
+            <label class="layui-form-label" style="padding-left: 0;width: 60px;">身份证号</label>
+            <div class="layui-input-inline layui-input-wrap">
+                <input type="text" name="identity" autocomplete="off" class="layui-input">
+            </div>
+            <label class="layui-form-label" style="padding-left: 0;width: 60px;">家庭住址</label>
+            <div class="layui-input-inline layui-input-wrap">
+                <input type="text" name="addr" autocomplete="off" class="layui-input">
+            </div>
+            <label class="layui-form-label" style="padding-left: 0;width: 60px;">项目名称</label>
+            <div class="layui-input-inline layui-input-wrap">
+                <input type="text" name="projectName" autocomplete="off" class="layui-input">
+            </div>
+            <label class="layui-form-label" style="padding-left: 0;width: 60px;">就读学校</label>
+            <div class="layui-input-inline layui-input-wrap">
+                <input type="text" name="school" autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-form-mid" style="padding: 0!important;">
+                <button type="submit" lay-submit lay-filter="demo-submit" class="layui-btn">搜索</button>
+            </div>
+            <div class="layui-hide" value="0" id="download-info"></div>
+        </div>
+    </div>
+</form>
+<div style="padding: 5px;">
+    <table class="layui-hide" id="test" lay-filter="test"></table>
+</div>
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="deleteCheckData"><i class="layui-icon layui-icon-delete"
+                                                                              style="font-size: 20px; color: #ffffff;"></i>删除选中行数据
+        </button>
+        <button class="layui-btn layui-btn-sm layui-bg-blue" lay-event="getAllData"><i
+                class="layui-icon layui-icon-export" style="font-size: 20px; color: #ffffff;"></i>导出当前查询结果
+        </button>
+    </div>
+</script>
+<script type="text/html" id="barDemo">
+    <div class="layui-clear-space">
+        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+        <a class="layui-btn layui-btn-xs" lay-event="delete">删除</a>
+    </div>
+</script>
+<script src="/layui/layui.js"></script>
+<script>
+    layui.use(['table', 'jquery', 'form'], function () {
+        var table = layui.table;
+        var $ = layui.jquery;
+        var form = layui.form;
+
+        // 创建渲染实例
+        table.render({
+            elem: '#test',
+            url: '/query', // 此处为静态模拟数据，实际使用时需换成真实接口
+            method: 'post',
+            toolbar: '#toolbarDemo',
+            defaultToolbar: ['filter'],
+            height: 'full-180', // 最大高度减去其他容器已占有的高度差
+            css: [ // 重设当前表格样式
+                '.layui-table-tool-temp{padding-right: 145px;}'
+            ].join(''),
+            cellMinWidth: 80,
+            totalRow: false,
+            request: {
+                pageName: 'pageNum', // 页码的参数名称，默认：page
+                limitName: 'pageSize' // 每页数据条数的参数名，默认：limit
+            },
+            page: true,
+            contentType: 'application/json',
+            cols: [[
+                {type: 'checkbox', fixed: 'left'},
+                {field: 'id', fixed: 'left', width: 80, title: 'ID', sort: false},
+                {field: 'name', width: 80, title: '姓名', edit: 'text'},
+                {field: 'identity', title: '身份证号', hide: 0, width: 150},
+                {field: 'sex', title: '性别', hide: 0, width: 100},
+                {field: 'school', title: '现就读学校', hide: 0, width: 100},
+                {field: 'grade', title: '所在班级', hide: 0, width: 100},
+                {field: 'teacher', title: '班主任姓名', hide: 0, width: 120},
+                {field: 'addr', title: '家庭住址', hide: 0, width: 100},
+                {field: 'guardianRelationship', title: '监护人', hide: 0, width: 100},
+                {field: 'guardianName', title: '监护人姓名', hide: 0, width: 100},
+                {field: 'phone', title: '联系方式', hide: 0, width: 100},
+                {field: 'familyInfo', title: '家庭情况', hide: 0, width: 100},
+                {field: 'receivingWay', title: '受助方式', hide: 0, width: 100},
+                {field: 'projectName', title: '项目名称/安心认识姓名', hide: 0, width: 200},
+                {field: 'subsidizeTime', title: '资助时间/开始结对时间', hide: 0, width: 200},
+                {field: 'receivingAmount', title: '受助金额（元）/结对计划', hide: 0, width: 200},
+                {field: 'other', title: '其他', hide: 0, width: 80},
+                {field: 'bachId', title: '导入批次ID', hide: 0, width: 120},
+                {field: 'createdAt', title: '导入时间', hide: 0, width: 180},
+                {field: 'updatedAt', title: '修改时间', hide: 0, width: 180},
+                {fixed: 'right', title: '操作', width: 134, minWidth: 200, toolbar: '#barDemo'}
+            ]],
+            done: function(res, curr, count, origin){
+                $("#download-info").attr("value", count);
+            },
+            error: function (res, msg) {
+                console.log(res, msg)
+            }
+        });
+
+        // 工具栏事件
+        table.on('toolbar(test)', function (obj) {
+            switch (obj.event) {
+                case 'getAllData':
+                    let downloadInfo = $("#download-info");
+                    let count = downloadInfo.attr("value");
+                    if (count == 0) {
+                        layer.msg("当前查询结果为空", {time: 2000, icon: 5});
+                        return;
+                    }
+                    layer.confirm('确认导出全部 [' + count + '] 行么？', function (index) {
+                        layer.close(index);
+                        let loadIndex = layer.msg('数据准备中', {icon: 16, shade: 0.1, time:0});
+                        let formData = form.val("demo-val-filter");
+                        $.ajax({
+                            url: "/export",
+                            type: "POST",
+                            data: JSON.stringify(formData),
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            success: function (data) {
+                                if (data.code === 0 && data.data !=null) {
+                                    layer.close(loadIndex);
+                                    window.open("/download/" + data.data);
+                                } else {
+                                    layer.msg("数据导出失败！", {time: 2000, icon: 5});
+                                }
+                            },
+                            error: function (data) {
+                                layer.msg("数据导出失败！", {time: 2000, icon: 5});
+                            },
+                        });
+                    });
+                    break;
+                case 'deleteCheckData':
+                    var id = obj.config.id;
+                    var checkStatus = table.checkStatus(id);
+                    if (checkStatus.data.length === 0) {
+                        layer.msg("请先选择批量删除的内容", {time: 2000, icon: 5});
+                        return;
+                    }
+                    layer.confirm('真的删除选中的 [' + checkStatus.data.length + '] 行么？', function (index) {
+                        layer.close(index);
+                        let ids = checkStatus.data.map(it=>it.id);
+                        $.ajax({
+                            url: "/delete",
+                            type: "POST",
+                            data: JSON.stringify(ids),
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            success: function (data) {
+                                if (data.code === 0) {
+                                    table.reloadData('test');
+                                } else {
+                                    layer.msg("删除失败请重试~", {time: 2000, icon: 5});
+                                }
+                            },
+                            error: function (data) {
+                                layer.msg("删除失败请重试~", {time: 2000, icon: 5});
+                            },
+                        });
+                    });
+                    break;
+            }
+        });
+        // 表头自定义元素工具事件 --- 2.8.8+
+        table.on('colTool(test)', function (obj) {
+            var event = obj.event;
+            console.log(obj);
+            if (event === 'email-tips') {
+                layer.alert(layui.util.escape(JSON.stringify(obj.col)), {
+                    title: '当前列属性配置项'
+                });
+            }
+        });
+
+        // 触发单元格工具事件
+        table.on('tool(test)', function (obj) { // 双击 toolDouble
+            var data = obj.data; // 获得当前行数据
+            // console.log(obj)
+            if (obj.event === 'edit') {
+                layer.open({
+                    title: '编辑-姓名:' + data.name,
+                    type: 2,
+                    area: ['60%', '80%'],
+                    content: '/edit/' + data.id
+                });
+            } else if (obj.event === 'delete') {
+                // 更多 - 下拉菜单
+                layer.confirm('真的删除行 [' + data.name + ': ' + data.identity + '] 么？', function (index) {
+                    layer.close(index);
+                    $.ajax({
+                        url: "/delete",
+                        type: "POST",
+                        data: JSON.stringify([data.id]),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (data) {
+                            if (data.code === 0) {
+                                table.reloadData('test');
+                            } else {
+                                layer.msg("删除失败请重试~", {time: 2000, icon: 5});
+                            }
+                        },
+                        error: function (data) {
+                            layer.msg("删除失败请重试~", {time: 2000, icon: 5});
+                        },
+                    });
+                });
+            }
+        });
+
+        form.on('submit(demo-submit)', function (data) {
+            var field = data.field; // 获取表单全部字段值
+            table.reloadData('test', {where: {projectHope: field}});
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <property name="appName" value="project-hope"/>
+    <!--引入springboot的默认日志配置-->
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!--大小和时间滚动Appender-->
+    <appender name="ROLLING_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/file.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"> <!-- rollover daily -->
+            <fileNamePattern>logs/file-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <!-- keep 30 days' worth of history -->
+            <maxHistory>2</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!-- or whenever the file size reaches 100MB -->
+                <maxFileSize>50MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- 异步输出 -->
+    <appender name="ROLLING_FILE_ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <!--默认为 false，在队列满的时候 appender 会阻塞而不是丢弃信息。设置为 true，appender 不会阻塞你的应用而会将消息丢弃-->
+        <neverBlock>true</neverBlock>
+        <!-- 更改默认的队列的深度,该值会影响性能.默认值为256 -->
+        <queueSize>2048</queueSize>
+        <!-- 添加附加的appender,最多只能添加一个 -->
+        <appender-ref ref="ROLLING_FILE"/>
+    </appender>
+
+    <!-- 控制台输出日志级别 -->
+    <root level="INFO">
+        <!-- 开发环境时激活 -->
+        <springProfile name="local">
+            <appender-ref ref="STDOUT"/>
+            <appender-ref ref="ROLLING_FILE_ASYNC"/>
+        </springProfile>
+        <!-- 非开发环境时激活 -->
+        <springProfile name="!local">
+            <appender-ref ref="ROLLING_FILE_ASYNC"/>
+        </springProfile>
+    </root>
+</configuration>
