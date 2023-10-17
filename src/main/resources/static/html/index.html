@@ -39,6 +39,10 @@
             <div class="layui-input-inline layui-input-wrap">
                 <input type="text" name="school" autocomplete="off" class="layui-input">
             </div>
+            <label class="layui-form-label" style="padding-left: 0;width: 60px;">导入批次</label>
+            <div class="layui-input-inline layui-input-wrap">
+                <input type="text" name="bachId" autocomplete="off" class="layui-input">
+            </div>
             <div class="layui-form-mid" style="padding: 0!important;">
                 <button type="submit" lay-submit lay-filter="demo-submit" class="layui-btn">搜索</button>
             </div>
@@ -51,6 +55,9 @@
 </div>
 <script type="text/html" id="toolbarDemo">
     <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm layui-bg-red" lay-event="addData"><i
+                class="layui-icon layui-icon-add-circle" style="font-size: 20px; color: #ffffff;"></i>新增数据
+        </button>
         <button class="layui-btn layui-btn-sm" lay-event="deleteCheckData"><i class="layui-icon layui-icon-delete"
                                                                               style="font-size: 20px; color: #ffffff;"></i>删除选中行数据
         </button>
@@ -126,6 +133,14 @@
         // 工具栏事件
         table.on('toolbar(test)', function (obj) {
             switch (obj.event) {
+                case 'addData':
+                    layer.open({
+                        title: '新增记录:',
+                        type: 2,
+                        area: ['60%', '80%'],
+                        content: 'add.html'
+                    });
+                    break;
                 case 'getAllData':
                     let downloadInfo = $("#download-info");
                     let count = downloadInfo.attr("value");

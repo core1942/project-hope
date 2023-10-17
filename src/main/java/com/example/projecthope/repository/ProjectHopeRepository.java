@@ -16,4 +16,6 @@ public interface ProjectHopeRepository extends JpaRepository<ProjectHope, Intege
     @Query("update ProjectHope u set u.isDelete = ?2,u.deletedAt=current_timestamp where u.id in ?1")
     int updateIsDeleteById(List<Integer> ids, Integer isDelete);
 
+    @Query("select u.id from ProjectHope u where u.identity=?1 ")
+    Integer findIdByIdentity(String identity);
 }

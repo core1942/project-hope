@@ -13,9 +13,11 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -30,6 +32,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.rmi.RemoteException;
+import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -72,8 +75,10 @@ public class HopeService {
         Workbook errWb = null;
         UploadDetail uploadDetail = new UploadDetail();
         ExcelProcessor excelProcessor = ExcelProcessor.create(wb);
+        Long bachId = Instant.now().getEpochSecond();
         for (ProjectHope projectHope : excelProcessor) {
             if (projectHope != null) {
+                projectHope.setBachId(bachId);
                 try {
                     ExcelProcessor.check(projectHope);
                     save(projectHope);
@@ -89,11 +94,17 @@ public class HopeService {
         return uploadDetail;
     }
 
-    private void save(ProjectHope projectHope) {
+    public void save(ProjectHope projectHope) {
         try {
+            projectHope.setIsDelete(0);
             repository.save(projectHope);
-        } catch (DuplicateKeyException e) {
-            // repository.updateByIdentity(projectHope);
+        } catch (DataIntegrityViolationException e) {
+            if (! (e.getCause() instanceof ConstraintViolationException)) {
+                throw e;
+            }
+            Integer id = repository.findIdByIdentity(projectHope.getIdentity());
+            projectHope.setId(id);
+            repository.save(projectHope);
         }
     }
 

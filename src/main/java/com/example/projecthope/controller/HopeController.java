@@ -7,6 +7,7 @@ import com.example.projecthope.entity.ProjectHope;
 import com.example.projecthope.service.HopeService;
 import com.example.projecthope.vo.UploadDetail;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
@@ -39,6 +40,16 @@ public class HopeController {
 
     @GetMapping("/download/{fileName:.+}")
     public ResponseEntity<Resource> downloadFile(@PathVariable String fileName) throws MalformedURLException, UnsupportedEncodingException {
+        if (fileName.equals("standard-template")) {
+            fileName = "金寨县希望工程受助学生信息统计.xlsx";
+            String replace = URLEncoder.encode(fileName, "UTF-8").replace("+", "%20");
+            String contentHeader = "attachment; filename*=UTF-8''" + replace;
+            ClassPathResource classPathResource = new ClassPathResource("excel/standard.xlsx");
+            return ResponseEntity.ok()
+                    .contentType(MediaType.parseMediaType("application/octet-stream;charset=UTF-8"))
+                    .header(HttpHeaders.CONTENT_DISPOSITION, contentHeader)
+                    .body(classPathResource);
+        }
         String replace = URLEncoder.encode(fileName, "UTF-8").replace("+", "%20");
         String contentHeader = "attachment; filename*=UTF-8''" + replace;
         return ResponseEntity.ok()

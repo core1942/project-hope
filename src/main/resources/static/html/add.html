@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>金寨县希望工程受助学生统计</title>
+    <!-- 请勿在项目正式环境中引用该 layui.css 地址 -->
+    <link href="/layui/css/layui.css" rel="stylesheet">
+</head>
+<body>
+<form class="layui-form  layui-row layui-form-pane layui-margin-4" action="">
+    <div class="layui-col-md6">
+        <div class="layui-form-item">
+            <label class="layui-form-label">姓名</label>
+            <div class="layui-input-inline layui-input-wrap">
+                <input type="text" name="name"  placeholder="请输入" autocomplete="off"
+                       class="layui-input" lay-verify="required" >
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">身份证号</label>
+            <div class="layui-input-inline layui-input-wrap">
+                <input type="text" name="identity"  placeholder="请输入" autocomplete="off"
+                       class="layui-input" lay-verify="required" >
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">性别</label>
+            <div class="layui-input-inline layui-input-wrap">
+                <input type="text" name="sex"  placeholder="请输入" autocomplete="off"
+                       class="layui-input" >
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">现就读学校</label>
+            <div class="layui-input-inline layui-input-wrap">
+                <input type="text" name="school"  placeholder="请输入" autocomplete="off"
+                       class="layui-input" >
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">所在班级</label>
+            <div class="layui-input-inline layui-input-wrap">
+                <input type="text" name="grade"  placeholder="请输入" autocomplete="off"
+                       class="layui-input" >
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">班主任姓名</label>
+            <div class="layui-input-inline layui-input-wrap">
+                <input type="text" name="teacher"  placeholder="请输入" autocomplete="off"
+                       class="layui-input" >
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">家庭住址</label>
+            <div class="layui-input-inline layui-input-wrap">
+                <input type="text" name="addr"  placeholder="请输入" autocomplete="off"
+                       class="layui-input" >
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">监护人</label>
+            <div class="layui-input-inline layui-input-wrap">
+                <input type="text" name="guardianRelationship"  placeholder="请输入"
+                       autocomplete="off" class="layui-input" >
+            </div>
+        </div>
+    </div>
+    <div class="layui-col-md6">
+        <div class="layui-form-item">
+            <label class="layui-form-label">监护人姓名</label>
+            <div class="layui-input-inline layui-input-wrap">
+                <input type="text" name="guardianName"  placeholder="请输入" autocomplete="off"
+                       class="layui-input" >
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">联系方式</label>
+            <div class="layui-input-inline layui-input-wrap">
+                <input type="text" name="phone"  placeholder="请输入" autocomplete="off"
+                       class="layui-input" >
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">家庭情况</label>
+            <div class="layui-input-inline layui-input-wrap">
+                <input type="text" name="familyInfo"  placeholder="请输入" autocomplete="off"
+                       class="layui-input" >
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">受助方式</label>
+            <div class="layui-input-inline layui-input-wrap">
+                <input type="text" name="receivingWay"  placeholder="请输入" autocomplete="off"
+                       class="layui-input" >
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">项目名称/安心认识姓名</label>
+            <div class="layui-input-inline layui-input-wrap">
+                <input type="text" name="projectName"  placeholder="请输入" autocomplete="off"
+                       class="layui-input" >
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">资助时间/开始结对时间</label>
+            <div class="layui-input-inline layui-input-wrap">
+                <input type="text" name="subsidizeTime"  placeholder="请输入"
+                       autocomplete="off"
+                       class="layui-input" >
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">受助金额（元）/结对计划</label>
+            <div class="layui-input-inline layui-input-wrap">
+                <input type="text" name="receivingAmount"  placeholder="请输入"
+                       autocomplete="off"
+                       class="layui-input" >
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">其他</label>
+            <div class="layui-input-inline layui-input-wrap">
+                <input type="text" name="other"  placeholder="请输入" autocomplete="off"
+                       class="layui-input" >
+            </div>
+        </div>
+    </div>
+    <div class="layui-col-md3 layui-col-md-offset3">
+        <div class="layui-input-block">
+            <button type="submit" class="layui-btn" lay-submit lay-filter="demo1">立即提交</button>
+        </div>
+    </div>
+</form>
+
+<!-- 请勿在项目正式环境中引用该 layui.js 地址 -->
+<script src="/layui/layui.js"></script>
+<script>
+    layui.use(['form', 'jquery'], function () {
+        var form = layui.form;
+        var layer = layui.layer;
+        var $ = layui.jquery;
+
+        // 提交事件
+        form.on('submit(demo1)', function (data) {
+            $.ajax({
+                url: "/update",
+                type: "POST",
+                data: JSON.stringify(data.field),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    if (data.code === 0) {
+                        parent.layui.table.reloadData('test');
+                        // 注：parent 是 JS 自带的全局对象，可用于操作父页面
+                        var index = parent.layer.getFrameIndex(window.name); // 获取窗口索引
+                        parent.layer.close(index);
+                        parent.layer.msg("新增成功~", {time: 2000, icon: 6});
+                    } else {
+                        layer.msg("新增失败请重试~", {time: 2000, icon: 5});
+                    }
+                },
+                error: function (data) {
+                    layer.msg("新增失败请重试~", {time: 2000, icon: 5});
+                },
+            });
+            return false;
+        });
+
+    });
+</script>
+
+</body>
+</html>
