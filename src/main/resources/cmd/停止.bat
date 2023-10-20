@@ -4,6 +4,6 @@ if defined ProjectHopePid (
     @REM     taskkill F /pid %ProjectHopePid%
     start "" http://localhost:8080/stop
 ) else (
-    echo æ²¡æœ‰å¯åŠ¨
+    echo Ã»ÓĞÆô¶¯
 )
 @REM pause
