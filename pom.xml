@@ -74,7 +74,7 @@
             <id>local</id>
             <properties>
                 <profiles.active>local</profiles.active>
-                <data.base.url>192.168.103.191</data.base.url>
+                <data.base.url>192.168.10.231</data.base.url>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
