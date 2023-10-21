@@ -158,8 +158,7 @@ public class HopeService {
     }
 
     public void update(ProjectHope projectHope) {
-        projectHope.setIsDelete(0);
-        repository.save(projectHope);
+        this.save(projectHope);
     }
 
     public Page<ProjectHope> query(QueryReq queryReq) {
@@ -177,8 +176,7 @@ public class HopeService {
         }
         InputStream standardXlsx = HopeService.class.getResourceAsStream("/excel/standard.xlsx");
         XSSFWorkbook workbook = (XSSFWorkbook) WorkbookFactory.create(standardXlsx);
-        SXSSFWorkbook wb = new SXSSFWorkbook(workbook, EXPORT_MAX_SIZE);
-        ExcelProcessor excelProcessor = ExcelProcessor.create(wb);
+        ExcelProcessor excelProcessor = ExcelProcessor.createSXSSF(workbook, EXPORT_MAX_SIZE);
         int startRowNum = workbook.getSheetAt(0).getLastRowNum();
         Container container = new Container(startRowNum);
         boolean countinue;
@@ -189,8 +187,8 @@ public class HopeService {
                 query = queryProjectHopes(projectHope, pageNum);
             }
         } while (countinue);
-        String tempFile = writeToTempDir("金寨县希望工程受助学生统计.xlsx", wb);
-        wb.dispose();
+        String tempFile = writeToTempDir("金寨县希望工程受助学生统计.xlsx", excelProcessor.sxssfWorkbook);
+        excelProcessor.sxssfWorkbook.dispose();
         return tempFile;
     }
 

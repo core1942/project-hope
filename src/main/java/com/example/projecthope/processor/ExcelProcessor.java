@@ -27,7 +27,7 @@ public class ExcelProcessor implements Iterable<ProjectHope> {
     private static final DataFormatter DATA_FORMATTER = new DataFormatter();
     private final List<ExlBind> headerIndexBind;
     private final Workbook workbook;
-    private SXSSFWorkbook sxssfWorkbook;
+    public SXSSFWorkbook sxssfWorkbook;
 
     private ExcelProcessor(Workbook workbook, List<ExlBind> headerIndexBind) {
         this.workbook = workbook;
@@ -39,7 +39,7 @@ public class ExcelProcessor implements Iterable<ProjectHope> {
         Set<String> set = headerIndexBind.stream().map(ExlBind::getHeaderName).collect(Collectors.toSet());
         for (Bind required : REQUIRED_SET) {
             if (!set.contains(required.getHeaderName())) {
-                throw new RuntimeException(MessageFormat.format("缺少字段[{0}]", required));
+                throw new RuntimeException(MessageFormat.format("缺少字段[{0}]", required.getHeaderName()));
             }
         }
         return new ExcelProcessor(workbook, headerIndexBind);
@@ -89,6 +89,7 @@ public class ExcelProcessor implements Iterable<ProjectHope> {
         Sheet sheet = wb.getSheetAt(0);
         int startLineNum = sheet.getLastRowNum() == -1 ? 1 : sheet.getLastRowNum();
         Row row = sheet.createRow(startLineNum + 1);
+        row.setHeight(sheet.getDefaultRowHeight());
         for (ExlBind exlBind : headerIndexBind) {
             Cell cell = row.createCell(exlBind.getCellIndex());
             cell.setCellValue(projectHope.getVariable(exlBind.getField()));
