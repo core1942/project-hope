@@ -1,4 +1,5 @@
 @echo off
+cd /d %~dp0
 for /f "usebackq tokens=2 delims=:" %%f in (`ipconfig ^| findstr /c:"IPv4 Address"`) do (set Ipv4Address=%%f)
 if not defined Ipv4Address (
     for /f "usebackq tokens=2 delims=:" %%f in (`ipconfig ^| findstr /c:"IPv4 µÿ÷∑"`) do (set Ipv4Address=%%f)
